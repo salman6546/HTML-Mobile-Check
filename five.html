@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Hack Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            background: black;
+            color: red;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .warning {
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            text-align: center;
+            font-size: 2rem;
+            color: red;
+            text-shadow: 0 0 10px red, 0 0 20px darkred, 0 0 40px red;
+            animation: glitch 1s infinite;
+        }
+
+        .info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            text-align: center;
+            color: lime;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 0 0 10px red, 0 0 20px darkred;
+            }
+            50% {
+                text-shadow: 5px 5px red, -5px -5px darkred;
+                transform: scale(1.05);
+            }
+        }
+
+        .glitch-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.2) 5%
+            );
+            animation: shake 0.1s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0px, 0px); }
+            25% { transform: translate(-3px, 3px); }
+            50% { transform: translate(3px, -3px); }
+            75% { transform: translate(-3px, -3px); }
+            100% { transform: translate(3px, 3px); }
+        }
+
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            color: lime;
+            z-index: 1;
+        }
+
+        .matrix span {
+            position: absolute;
+            display: block;
+            font-size: 14px;
+            animation: fall 4s infinite linear;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-bg"></div>
+    <div class="warning">SYSTEM BREACHED! HACKING IN PROGRESS...</div>
+    <div class="matrix" id="matrix"></div>
+    <div class="info">ALL YOUR DATA IS BEING DELETED...</div>
+
+    <audio id="alarm" autoplay loop>
+        <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+    </audio>
+
+    <script>
+        // Prevent User Interaction
+        document.body.addEventListener('touchstart', e => e.preventDefault());
+        document.body.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Vibration Feedback
+        if (navigator.vibrate) {
+            setInterval(() => navigator.vibrate([500, 200, 500]), 2000);
+        }
+
+        // Matrix Effect
+        const matrixContainer = document.getElementById('matrix');
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%^&*';
+        const screenWidth = window.innerWidth;
+
+        for (let i = 0; i < 200; i++) {
+            const span = document.createElement('span');
+            span.textContent = chars[Math.floor(Math.random() * chars.length)];
+            span.style.left = Math.random() * screenWidth + 'px';
+            span.style.top = Math.random() * -100 + 'px';
+            span.style.color = `rgb(0, ${Math.random() * 255}, 0)`;
+            span.style.animationDelay = Math.random() * 5 + 's';
+            matrixContainer.appendChild(span);
+        }
+
+        // Alarm Sound
+        const alarmSound = document.getElementById('alarm');
+        alarmSound.play();
+
+        // Self-destruction Message
+        setTimeout(() => {
+            document.body.innerHTML = `
+                <h1 style="color: lime; text-align: center; margin-top: 40%;">DEVICE FORMATTED!</h1>
+            `;
+            alarmSound.pause();
+            if (navigator.vibrate) {
+                navigator.vibrate([0]); // Stop Vibration
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

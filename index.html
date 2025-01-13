@@ -1,12 +1,171 @@
-<!-- With viewport tag -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viewport Example</title>
+    <title>System Breach</title>
+    <style>
+        /* Body Styling */
+        body {
+            margin: 0;
+            background-color: black;
+            color: red;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        /* Glitch Text */
+        .glitch-text {
+            position: absolute;
+            top: 10%;
+            width: 100%;
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: red;
+            text-shadow: 2px 2px black, -2px -2px darkred;
+            animation: glitch 1s infinite;
+            z-index: 2;
+        }
+
+        /* Warning Overlay */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.1);
+            animation: flicker 0.5s infinite;
+            z-index: 3;
+        }
+
+        @keyframes flicker {
+            0%, 100% {
+                background: rgba(255, 0, 0, 0.1);
+            }
+            50% {
+                background: rgba(255, 0, 0, 0.3);
+            }
+        }
+
+        /* Matrix Background */
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: red;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .matrix span {
+            display: block;
+            position: absolute;
+            font-size: 20px;
+            animation: fall 3s infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Warning Message */
+        .warning {
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            font-size: 1.5rem;
+            color: lime;
+            z-index: 4;
+        }
+
+        /* Glitch Animation */
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 2px 2px black, -2px -2px darkred;
+            }
+            50% {
+                text-shadow: -2px -2px black, 2px 2px darkred;
+            }
+        }
+
+        /* Screen Flash */
+        @keyframes flash {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+                background: rgba(255, 0, 0, 0.8);
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>This is a responsive page</h1>
-    <p>The content adjusts to fit the screen width.</p>
+    <!-- Glitch Text -->
+    <div class="glitch-text">!!! SYSTEM BREACHED !!!</div>
+
+    <!-- Red Flicker Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Matrix Background -->
+    <div class="matrix" id="matrix"></div>
+
+    <!-- Warning Terminal -->
+    <div class="warning" id="warning"></div>
+
+    <script>
+        // Generate Matrix Effect
+        const matrixContainer = document.getElementById('matrix');
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()';
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        for (let i = 0; i < 400; i++) {
+            const span = document.createElement('span');
+            span.style.left = Math.random() * screenWidth + 'px';
+            span.style.animationDelay = Math.random() * 4 + 's';
+            span.style.color = `rgb(255, ${Math.random() * 50}, ${Math.random() * 50})`; // Intense red shades
+            span.textContent = chars[Math.floor(Math.random() * chars.length)];
+            matrixContainer.appendChild(span);
+        }
+
+        // Warning Terminal Simulation
+        const warning = document.getElementById('warning');
+        const warningLines = [
+            '[ERROR] Unauthorized Access Detected...',
+            '[WARNING] Firewall Bypassed...',
+            '[ALERT] Server Compromised...',
+            '[CRITICAL] Data Extraction in Progress...',
+            '[STATUS] 75% Complete...',
+            '[SYSTEM] Encryption Keys Found...',
+            '[BREACH] Total Security Failure...',
+        ];
+
+        setInterval(() => {
+            const line = document.createElement('div');
+            line.textContent = warningLines[Math.floor(Math.random() * warningLines.length)];
+            warning.appendChild(line);
+            if (warning.childNodes.length > 10) {
+                warning.removeChild(warning.firstChild);
+            }
+        }, 600);
+
+        // Sound Effect
+        const audio = new Audio('https://www.soundjay.com/button/beep-09.wav');
+        setInterval(() => {
+            audio.play();
+        }, 2000);
+    </script>
 </body>
 </html>
