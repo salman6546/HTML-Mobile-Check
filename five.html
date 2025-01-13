@@ -3,149 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Hack Simulation</title>
+    <title>System Breach Alert</title>
     <style>
+        /* Body Styling */
         body {
             margin: 0;
-            background: black;
-            color: red;
+            background-color: black;
+            color: lime;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            user-select: none;
         }
 
-        .warning {
+        /* Glitch Text */
+        .glitch-text {
             position: absolute;
             top: 20%;
             width: 100%;
             text-align: center;
-            font-size: 2rem;
+            font-size: 4rem;
+            font-weight: bold;
             color: red;
-            text-shadow: 0 0 10px red, 0 0 20px darkred, 0 0 40px red;
+            text-shadow: 2px 2px black, -2px -2px darkred;
             animation: glitch 1s infinite;
+            z-index: 2;
         }
 
-        .info {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem;
-            text-align: center;
-            color: lime;
-        }
-
-        @keyframes glitch {
-            0%, 100% {
-                text-shadow: 0 0 10px red, 0 0 20px darkred;
-            }
-            50% {
-                text-shadow: 5px 5px red, -5px -5px darkred;
-                transform: scale(1.05);
-            }
-        }
-
-        .glitch-bg {
+        /* Warning Overlay */
+        .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(255, 0, 0, 0.2) 0%,
-                rgba(0, 0, 0, 0.2) 5%
-            );
-            animation: shake 0.1s infinite;
+            background: rgba(255, 0, 0, 0.1);
+            animation: flicker 0.5s infinite alternate;
+            z-index: 3;
         }
 
-        @keyframes shake {
-            0% { transform: translate(0px, 0px); }
-            25% { transform: translate(-3px, 3px); }
-            50% { transform: translate(3px, -3px); }
-            75% { transform: translate(-3px, -3px); }
-            100% { transform: translate(3px, 3px); }
+        @keyframes flicker {
+            0%, 100% {
+                background: rgba(255, 0, 0, 0.1);
+            }
+            50% {
+                background: rgba(255, 0, 0, 0.3);
+            }
         }
 
+        /* Matrix Background */
         .matrix {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             color: lime;
+            overflow: hidden;
             z-index: 1;
         }
 
         .matrix span {
-            position: absolute;
             display: block;
-            font-size: 14px;
-            animation: fall 4s infinite linear;
+            position: absolute;
+            font-size: 20px;
+            animation: fall linear infinite forwards; /* Changed to linear for consistent fall */
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-100%);
-                opacity: 1;
+            to {
+                transform: translateY(100vh); /* Fall to the bottom of the viewport */
+                opacity: 0; /* Fade out */
             }
-            100% {
-                transform: translateY(100%);
-                opacity: 0;
+        }
+
+        /* Warning Message */
+        .warning {
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            font-size: 1.5rem;
+            color: lime;
+            z-index: 4;
+        }
+
+        /* Glitch Animation */
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 2px 2px black, -2px -2px darkred;
+                transform: translate(0);
+            }
+            25% {
+                text-shadow: -2px -2px black, 2px 2px darkred;
+                transform: translate(-5px, -5px);
+            }
+            50% {
+                text-shadow: -1px -1px black, -1px -1px darkred;
+                transform: translate(5px, -5px);
             }
         }
     </style>
 </head>
 <body>
-    <div class="glitch-bg"></div>
-    <div class="warning">SYSTEM BREACHED! HACKING IN PROGRESS...</div>
-    <div class="matrix" id="matrix"></div>
-    <div class="info">ALL YOUR DATA IS BEING DELETED...</div>
+    <!-- Glitch Text -->
+    <div class="glitch-text">!!! SYSTEM BREACHED !!!</div>
 
-    <audio id="alarm" autoplay loop>
-        <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
-    </audio>
+    <!-- Red Flicker Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Matrix Background -->
+    <div class="matrix" id="matrix"></div>
+
+    <!-- Warning Terminal -->
+    <div class="warning" id="warning"></div>
 
     <script>
-        // Prevent User Interaction
-        document.body.addEventListener('touchstart', e => e.preventDefault());
-        document.body.addEventListener('contextmenu', e => e.preventDefault());
-
-        // Vibration Feedback
-        if (navigator.vibrate) {
-            setInterval(() => navigator.vibrate([500, 200, 500]), 2000);
-        }
-
-        // Matrix Effect
+        // Generate Matrix Effect
         const matrixContainer = document.getElementById('matrix');
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%^&*';
-        const screenWidth = window.innerWidth;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()';
+        
+        function createMatrix() {
+          const screenWidth = window.innerWidth;
 
-        for (let i = 0; i < 200; i++) {
-            const span = document.createElement('span');
-            span.textContent = chars[Math.floor(Math.random() * chars.length)];
-            span.style.left = Math.random() * screenWidth + 'px';
-            span.style.top = Math.random() * -100 + 'px';
-            span.style.color = `rgb(0, ${Math.random() * 255}, 0)`;
-            span.style.animationDelay = Math.random() * 5 + 's';
-            matrixContainer.appendChild(span);
+          for (let i = 0; i < screenWidth / 20; i++) { // Adjust number of columns based on screen width
+              const span = document.createElement('span');
+              span.style.left = (i * 20) + 'px'; // Position each column
+              span.style.animationDuration = (Math.random() * (3 - 1) + 1) + 's'; // Random fall duration
+              span.style.color = `rgb(0, ${Math.random() * (255)}, ${Math.random() * (50)})`; // Bright green shades
+              span.textContent = chars[Math.floor(Math.random() * chars.length)];
+              matrixContainer.appendChild(span);
+          }
         }
 
-        // Alarm Sound
-        const alarmSound = document.getElementById('alarm');
-        alarmSound.play();
+        createMatrix();
 
-        // Self-destruction Message
-        setTimeout(() => {
-            document.body.innerHTML = `
-                <h1 style="color: lime; text-align: center; margin-top: 40%;">DEVICE FORMATTED!</h1>
-            `;
-            alarmSound.pause();
-            if (navigator.vibrate) {
-                navigator.vibrate([0]); // Stop Vibration
-            }
-        }, 30000);
+        // Warning Terminal Simulation
+        const warning = document.getElementById('warning');
+        const warningLines = [
+          '[ERROR] Unauthorized Access Detected...',
+          '[WARNING] Firewall Bypassed...',
+          '[ALERT] Server Compromised...',
+          '[CRITICAL] Data Extraction in Progress...',
+          '[STATUS] Security Breach at Level RED...',
+          '[SYSTEM] Encryption Keys Found...',
+          '[BREACH] Total Security Failure...',
+          '[INFO] User Data Exposed...',
+          '[NOTICE] Immediate Action Required!',
+          '[ALERT] Intrusion Detected in Sector A3...',
+          '[WARNING] System Integrity Compromised...'
+        ];
+
+        setInterval(() => {
+          const line = document.createElement('div');
+          line.textContent = warningLines[Math.floor(Math.random() * warningLines.length)];
+          warning.appendChild(line);
+          if (warning.childNodes.length > 10) {
+              warning.removeChild(warning.firstChild);
+          }
+        }, 800); // Adjusted interval for more frequent warnings
+
+        // Sound Effect
+        const audio = new Audio('https://www.soundjay.com/button/beep-09.wav');
+        
+        setInterval(() => {
+          audio.play();
+        }, 2500); // Adjusted sound interval
     </script>
 </body>
 </html>

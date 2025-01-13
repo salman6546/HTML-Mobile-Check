@@ -109,6 +109,74 @@
                 background: rgba(255, 0, 0, 0.8);
             }
         }
+
+        /* Shake Effect for the Screen */
+        @keyframes shake {
+            0%, 100% {
+                transform: translate(0px, 0px);
+            }
+            25% {
+                transform: translate(-5px, 5px);
+            }
+            50% {
+                transform: translate(5px, -5px);
+            }
+            75% {
+                transform: translate(-5px, -5px);
+            }
+        }
+
+        /* Broken Glass Effect */
+        .broken-glass {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/broken-glass.png');
+            background-size: cover;
+            z-index: 5;
+            animation: shake 0.5s infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .glitch-text {
+                font-size: 2rem; /* Smaller font size for mobile */
+                top: 5%;
+            }
+
+            .warning {
+                font-size: 1rem; /* Smaller warning text */
+                left: 10%;
+                bottom: 2%;
+            }
+
+            .matrix span {
+                font-size: 16px; /* Smaller matrix text */
+            }
+
+            .broken-glass {
+                background-size: 50%; /* Adjust broken glass pattern for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glitch-text {
+                font-size: 1.5rem; /* Even smaller font size for smaller screens */
+                top: 3%;
+            }
+
+            .warning {
+                font-size: 0.9rem; /* Further smaller warning text */
+                left: 5%;
+                bottom: 1%;
+            }
+
+            .matrix span {
+                font-size: 14px; /* Even smaller matrix text */
+            }
+        }
     </style>
 </head>
 <body>
@@ -120,6 +188,9 @@
 
     <!-- Matrix Background -->
     <div class="matrix" id="matrix"></div>
+
+    <!-- Broken Glass Effect -->
+    <div class="broken-glass"></div>
 
     <!-- Warning Terminal -->
     <div class="warning" id="warning"></div>
@@ -150,6 +221,9 @@
             '[STATUS] 75% Complete...',
             '[SYSTEM] Encryption Keys Found...',
             '[BREACH] Total Security Failure...',
+            '[ERROR] System Shutdown in Progress...',
+            '[ALERT] Data Deletion in Progress...',
+            '[CRITICAL] File System Corrupted...'
         ];
 
         setInterval(() => {
@@ -166,6 +240,19 @@
         setInterval(() => {
             audio.play();
         }, 2000);
+
+        // Simulate Data Deletion (Message After 20 Seconds)
+        setTimeout(() => {
+            const deletionMessage = document.createElement('div');
+            deletionMessage.textContent = '[ERROR] ALL DATA HAS BEEN HACKED!';
+            deletionMessage.style.position = 'absolute';
+            deletionMessage.style.top = '50%';
+            deletionMessage.style.left = '50%';
+            deletionMessage.style.transform = 'translate(-50%, -50%)';
+            deletionMessage.style.color = 'lime';
+            deletionMessage.style.fontSize = '2rem';
+            document.body.appendChild(deletionMessage);
+        }, 20000);
     </script>
 </body>
 </html>
